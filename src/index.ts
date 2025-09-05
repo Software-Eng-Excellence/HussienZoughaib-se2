@@ -10,6 +10,7 @@ const orders = [
   { id: 4, item: "Red Velvet", price: 25 },
   { id: 5, item: "Coffee", price: 8 },
 ];
+
 const rules= [
         new PriceValidater(),
         new ItemValidater(),
