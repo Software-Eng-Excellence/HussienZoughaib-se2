@@ -1,6 +1,6 @@
 
-import {FinanceCalculater,ValidateOtrder,OrderManagment, ItemValidater, MaxPriceValidater, PriceValidater } from "app";
-
+import {FinanceCalculater,ValidateOtrder,OrderManagment} from "./app";
+import logger   from "./../util/logger";
 
 
 const orders = [
@@ -11,13 +11,9 @@ const orders = [
   { id: 5, item: "Coffee", price: 8 },
 ];
 
-const rules= [
-        new PriceValidater(),
-        new ItemValidater(),
-        new MaxPriceValidater()
-    ];
 
-const Ordermanager=new OrderManagment(new ValidateOtrder(rules),new FinanceCalculater());
+
+const Ordermanager=new OrderManagment(new ValidateOtrder(),new FinanceCalculater());
 for(const  order of orders){
         Ordermanager.addOrder(order.item,order.price);
 
@@ -25,26 +21,27 @@ for(const  order of orders){
 
 // Adding a new order directly
 const newItem = "Marble";
-const newPrice = 22;
+const newPrice = 1;
 
 
 Ordermanager.addOrder(newItem,newPrice);
-console.log("Orders after adding a newd order:", Ordermanager.getOrder());
+logger.info("Orders after adding a newd order:%j", Ordermanager.getOrder());
 
 // Calculate Total Revenue directly
 
-console.log("Total Revenue:",   Ordermanager.getRevenue());
+logger.info("Total Revenue:"+   Ordermanager.getRevenue());
 
 // Calculate Average Buy Power directly
 
-console.log("Average Buy Power:", Ordermanager.getBuyPower());
+logger.info("Average Buy Power:"+ Ordermanager.getBuyPower());
 
 // Fetching an order directly
 const fetchId = 2;
 //const fetchedOrder = orders.find(order => order.id === fetchId);
-console.log("Order with ID 2:", Ordermanager.FetchOrder(fetchId));
+logger.info("Order with ID 2:"
+  + Ordermanager.FetchOrder(fetchId));
 
 // Attempt to fetch a non-existent order
 const nonExistentId = 10;
 
-console.log("Order with ID 10 (non-existent):",Ordermanager.FetchOrder(nonExistentId));
+logger.info("Order with ID 10 (non-existent):"+Ordermanager.FetchOrder(nonExistentId));

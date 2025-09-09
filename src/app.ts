@@ -1,3 +1,5 @@
+import logger from "../util/logger";
+
 export interface Order{
     id:number,
     item:string,
@@ -15,14 +17,24 @@ export interface Order{
     addOrder(item:string,price:number){
        // ValidateOtrder.CheckItems(item);
         //ValidateOtrder.CheckPrice(price);
-        const order:Order={id:this.orders.length++,item,price};
+        try{
+               const order:Order={id:this.orders.length+1,item,price};
         this.validater.validate(order);
             this.orders.push(order);
+        }
+      catch(error){
+        throw new Error(`Failed to add order: ${(error as Error).message}`);
+      }
 
 
     }
     FetchOrder(fetchId:number){
-        return this.getOrder().find(order => order.id === fetchId);
+        const order = this.getOrder().find(order => order.id === fetchId);
+        if (!order) {
+            logger.warn(`Order with ID ${fetchId} not found.`);
+            
+        }
+        return order;
     }
     getRevenue(){
         return this.Calculater.Calculate_Revenue(this.getOrder());
@@ -41,15 +53,18 @@ interface IValidater{
     validate(orders:Order):void;
 }
  export class ValidateOtrder implements IValidater{
+    private rules:IValidater[]=[
+        new PriceValidater(),
+        new ItemValidater(),
+        new MaxPriceValidater()
+    ]
    
      validate(orders: Order): void {
         for (const rule of this.rules) {
             rule.validate(orders);
         }
      }
-     constructor(private rules:IValidater[]){
-           
-    }
+     
     
 }
 
@@ -64,6 +79,7 @@ interface IValidater{
  export class PriceValidater implements IValidater{
     validate(orders:Order){
         if(orders.price<=0){
+            logger.error("Price must be greater than zero");
               throw new Error("Price must be greater than zero");
         }
     }
@@ -82,6 +98,7 @@ export  class ItemValidater implements IValidater {
 
     validate(order: Order) {
         if (!this.validItems.includes(order.item)) {
+            logger.error(`Invalid item '${order.item}'. Must be one of: ${this.validItems.join(", ")}`);
             throw new Error(`Invalid item '${order.item}'. Must be one of: ${this.validItems.join(", ")}`);
         }
     }
