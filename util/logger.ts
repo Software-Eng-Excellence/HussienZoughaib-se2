@@ -20,10 +20,10 @@ const logFormat = winston.format.combine(
 );
 
 const consoleFormat = winston.format.combine(
-	winston.format.colorize(),
-	winston.format.timestamp({ format: 'HH:mm:ss' }),
-	winston.format.splat(),
-	winston.format.printf(({ timestamp, level, message, stack }) => {
+  winston.format.colorize(),
+  winston.format.timestamp({ format: 'HH:mm:ss' }),
+  winston.format.splat(),
+  winston.format.printf(({ timestamp, level, message, stack }) => {
     return stack
       ? `[${timestamp}] ${level}: ${message}\n${stack}`
       : `[${timestamp}] ${level}: ${message}`;
@@ -32,7 +32,7 @@ const consoleFormat = winston.format.combine(
 
 // Create Winston logger instance
 const logger = winston.createLogger({
-	level: isDev ? 'debug' : 'info',
+	level: isDev ? 'debug' : 'info',//if the environment is development, set the log level to debug, otherwise set it to info
 	format: logFormat,
 	transports: [
     new winston.transports.Console({
