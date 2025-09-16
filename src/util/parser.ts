@@ -71,6 +71,37 @@ export async function writeCSV(filePath: string, data: string[][]): Promise<void
   }
 }
 
+<<<<<<< HEAD:src/util/parser.ts
 
+=======
+export async function csv_to_objects(FilePath:string):Promise<object[]>{
+  try{
+    //raed data form file
+    const data=await fs.readFile(FilePath,'utf-8');
+    return new Promise((resolve,reject)=>{
+      cvParser(data,{
+        trim:true,
+        skip_empty_lines:true,
+         //each row will be converted to an object using the header row as keys       
+        //give deatilas about the columns
+        columns:true
+      },(err,records)=>{
+        if(err){
+          return reject(err)
+        }
+        resolve(records as object[])
+
+      })
+
+    }) 
+
+
+  }
+  catch(error){
+    throw error
+  }
+
+}
+>>>>>>> 462c48393d689cbd4779c122243f12114742c942:util/parser.ts
 
  

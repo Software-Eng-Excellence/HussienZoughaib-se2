@@ -1,4 +1,5 @@
 
+<<<<<<< HEAD
 import path, { parse } from 'path';
 import { parseCSV} from './util/parser'
 import logger from './util/logger';
@@ -14,10 +15,26 @@ async function main() {
         for (const product of products) {
             logger.info(product);
 
+=======
+import path from 'path';
+import {csv_to_objects, parseCSV,} from '../util/parser'
+import logger from '../util/logger';
+import { json } from 'stream/consumers';
+
+const filePath = path.resolve(__dirname, './data/Cake orders.csv');
+
+async function main() {
+    try {
+        const products = await parseCSV(filePath)
+        for (const product of products) {
+            logger.info(product);
+
+>>>>>>> 462c48393d689cbd4779c122243f12114742c942
         }
     } catch(error) {
         logger.error(error)
     }
+<<<<<<< HEAD
 }
 async function main_2(){
 try{
@@ -31,6 +48,21 @@ catch(error){
     logger.error(error);
 
 
+=======
+       try {
+        //to objects 
+        const products =  await csv_to_objects(filePath)
+        for (const product of products) {
+            logger.info(JSON.stringify(product, null, 2));
+
+
+
+        }
+    } catch(error) {
+        logger.error(error)
+    }
+
+>>>>>>> 462c48393d689cbd4779c122243f12114742c942
 }
 }
 async function main_3(){
@@ -38,6 +70,7 @@ async function main_3(){
         const data=await parseXml(xmlFilePath);
         logger.info(JSON.stringify(data,null,2));
 
+<<<<<<< HEAD
     }
     catch(error){
         logger.error(error);
@@ -46,3 +79,6 @@ async function main_3(){
 //main();
 //main_2();
 main_3();
+=======
+main();
+>>>>>>> 462c48393d689cbd4779c122243f12114742c942
