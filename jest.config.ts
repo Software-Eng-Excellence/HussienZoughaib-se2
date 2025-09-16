@@ -1,23 +1,20 @@
-import type { Config } from '@jest/types';
+import type { Config } from 'jest';
 
-const config: Config.InitialOptions = {
-    preset: 'ts-jest',
-    testEnvironment: 'node',
-    roots: ['<rootDir>/tests'],//where to find the tests
-    testMatch: ['**/*.test.ts'],//what files to look for
-    verbose: true,//be detailed in output
-    collectCoverage: true,//how much of the code is covered by tests
-    collectCoverageFrom: ['src/**/*.ts'],//which files to collect coverage from
-    coverageDirectory: 'coverage',//where to output coverage files
-    coverageThreshold: {
-        global: {
-            
-            functions: 75,
-            statements: 75,
-        },
-    },
-    
-    
-    
-}
+const config: Config = {
+  preset: 'ts-jest',                    // Specifies that we are using ts-jest for TypeScript
+  testEnvironment: 'node',              // Specifies the test environment (e.g., jsdom or node)
+  roots: ['<rootDir>/tests'],                 // Specifies the root directory for Jest to look for test files
+  testMatch: ['<rootDir>/tests/**/*.ts'],
+  testPathIgnorePatterns:["/node_modules/"],
+  verbose: true,                        // Enables verbose output during testing
+  collectCoverageFrom: ['<rootDir>/src/**/*.ts'], // Specifies the files to collect coverage from
+  collectCoverage: true,                // Enables code coverage collection
+  coverageDirectory: 'coverage',        // Specifies the directory to output coverage files
+  coverageThreshold: {                  // Specifies the coverage threshold levels
+    global: {
+      functions: 80,
+      statements: 75
+    }
+  }
+};
 export default config;
