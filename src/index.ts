@@ -43,6 +43,6 @@ async function main_3(){
         logger.error(error);
     }
 }
-//main();
+main();
 //main_2();
-main_3();
+//main_3();
