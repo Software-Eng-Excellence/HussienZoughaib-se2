@@ -36,10 +36,7 @@
   "dependencies": {
     "csv-stringify": "^6.6.0",
     "dotenv": "^17.2.1",
-<<<<<<< HEAD
     "fast-xml-parser": "^5.2.5",
-=======
->>>>>>> 462c48393d689cbd4779c122243f12114742c942
     "winston": "^3.17.0",
     "winston-daily-rotate-file": "^5.0.0"
   }
