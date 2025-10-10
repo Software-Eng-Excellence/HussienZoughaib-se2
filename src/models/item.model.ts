@@ -3,4 +3,6 @@
 }
  export enum ItemCategory{
     Cake,
+    Book,
+    Toy
 }
