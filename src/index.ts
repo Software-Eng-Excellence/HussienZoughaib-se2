@@ -1,15 +1,11 @@
 
-import path, { parse } from 'path';
-import { parseCSV} from './util/parser'
-import logger from './util/logger';
-import { parseJSON } from './util/jsonParser';
-import { parseXml } from './util/xmlParser';
-import { Cake } from 'models/Cake.model';
-import { CakeBuilder } from './models/builder/Cake.builder';
 
-const filePath = path.resolve(__dirname, './data/data/cake orders.csv');
-const jsonFilePath=path.resolve(__dirname,'./data/data/book orders.json');
-const xmlFilePath=path.resolve(__dirname,'./data/data/toy orders.xml');
+
+
+import { CakeBuilder } from './models/builder/Cake.builder';
+import { BookBuilder } from './models/builder/Book.builder';
+import logger from './util/logger';
+import { ToyBuilder } from './models/builder/Toy.builder';
 async function main() {
     try{
         const cakeBuilder = new CakeBuilder();
@@ -41,28 +37,48 @@ async function main() {
 }
 async function main_2(){
 try{
-    const data =await parseJSON(jsonFilePath);
-    for(const item of data){
- logger.info(JSON.stringify(item));
+  
+    const bookbuilder=new BookBuilder();
+    const book=bookbuilder.setAuthor("George Orwell")
+    .setEdition("1st")
+    .setFormat("Hardcover")
+    .setGenre("Dystopian")
+    .setLanguage("English")
+    .setPackaging("Standard")
+    .setPublisher("Secker & Warburg")
+    .setTitle("1984")
+    .build();
+    logger.info("Book created successfully:");
+    logger.info(JSON.stringify(book,null,2));
+
+
     }
     
-}
+
 catch(error){
-    logger.error(error);
+    logger.error('Error creating book:', error);
 
 
 }
 }
 async function main_3(){
     try{
-        const data=await parseXml(xmlFilePath);
-        logger.info(JSON.stringify(data,null,2));
-
+        const toyBuilder=new ToyBuilder();
+        const toy=toyBuilder.setAgeGroup(3)
+        .setBrand("Lego")
+        .setBatteriesRequired(false)
+        .setEducational(true)
+        .setMaterial("Plastic")
+        .setType("Building Blocks")
+        .build();
+        logger.info("Toy created successfully:");
+        logger.info(JSON.stringify(toy,null,2));
     }
     catch(error){
-        logger.error(error);
+        logger.error('Error creating toy:', error);
     }
 }
+
 main();
-//main_2();
-//main_3();
+main_2();
+main_3();
