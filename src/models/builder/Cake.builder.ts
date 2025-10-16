@@ -16,6 +16,9 @@ export class CakeBuilder {
     private allergies!: string;
     private spIng!: string;
     private packageType!: string;
+    public static createBuilder(): CakeBuilder {
+        return new CakeBuilder();
+    }
 
     setType(type: string): CakeBuilder {
         this.type = type;
