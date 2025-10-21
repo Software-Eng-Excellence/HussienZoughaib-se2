@@ -6,7 +6,9 @@ export class ToyBuilder {
     private material!: string;
     private batteriesRequired!: boolean;
     private educational!: boolean;
-
+    public static createBuilder(): ToyBuilder {
+        return new ToyBuilder();
+    }
     // Setters - return this for fluent builder usage
     setType(type: string): this {
         this.type = type;
