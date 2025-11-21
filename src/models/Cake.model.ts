@@ -1,4 +1,7 @@
-import { IItem, ItemCategory } from "./Iitem";
+import { id } from "repository/IRepository";
+import { IIdentfaibleItem, IItem, ItemCategory } from "./Iitem";
+//i made this class since the ireepo  interfcae needs to have T exteds ID and ai dont want to cahnge the intial code so i made init  cake whre it  implments identfaibleitem whuch extends ID and IItem id for get id and item to getcat and i put cake model inside the constructor
+
 
  export class Cake implements IItem {
     private type: string;
@@ -110,4 +113,45 @@ import { IItem, ItemCategory } from "./Iitem";
     getPackageType(): string {
         return this.paakageType;
     }
+}
+export class IintCake  extends Cake implements  IIdentfaibleItem{
+    constructor(
+        private id: id,
+        type: string,
+        flavor: string,
+        filling: string,
+        size: number,
+        layer: number,
+        frostingtype: string,
+        frostingflavor: string,
+        dectype: string,
+        deccolor: string,
+        custommessage: string,
+        shape: string,
+        allergies: string,
+        spIng: string,
+        paakageType: string
+    ) {
+        super(
+            type,
+            flavor,
+            filling,
+            size,
+            layer,
+            frostingtype,
+            frostingflavor,
+            dectype,
+            deccolor,
+            custommessage,
+            shape,
+            allergies,
+            spIng,
+            paakageType
+        );
+    }
+    
+    getId(): id {
+        return this.id;
+    }
+    
 }

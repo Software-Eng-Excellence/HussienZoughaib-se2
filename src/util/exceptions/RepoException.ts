@@ -11,3 +11,19 @@ export class InvalidItemException extends Error {
         this.name = "InvalidItemException";
     }
 }
+export class RepositoryInitializationException extends Error {
+    constructor(message: string,error:Error) {
+        super(message);
+        this.name = "RepositoryInitializationException";
+        this.stack=error.stack;
+        this.message=`${message}: ${error.message}`;
+    }   
+}
+export class DBException extends Error {
+    constructor(message: string,error:Error) {
+        super(message);
+        this.name = "DBException";
+        this.stack=error.stack;
+        this.message=`${message}: ${error.message}`;
+    }   
+}

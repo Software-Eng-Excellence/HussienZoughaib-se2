@@ -1,5 +1,5 @@
 import logger from "../../util/logger";
-import { Cake } from "../Cake.model";
+import { Cake, IintCake } from "../Cake.model";
 
 export class CakeBuilder {
     private type!: string;
@@ -132,6 +132,48 @@ export class CakeBuilder {
             this.allergies,
             this.spIng,
             this.packageType
+        );
+    }
+}
+export class IndentCakeBuilder{
+    private id!:string;
+    private cake!:Cake;
+    static createBuilder():IndentCakeBuilder{
+        return new IndentCakeBuilder();
+    }
+    setId(id:string):IndentCakeBuilder{
+        this.id=id;
+        return this;
+    }
+    setCake(cake:Cake):IndentCakeBuilder{
+        this.cake=cake;
+        return this;
+    }
+    build():IintCake{
+        if(!this.id){
+            logger.error("Missing id for IintCake");
+            throw new Error("Missing id for IintCake");
+        }
+        if(!this.cake){
+            logger.error("Missing Cake for IintCake");
+            throw new Error("Missing Cake for IintCake");
+        }
+        return new IintCake(
+            this.id,
+            this.cake.getType(),
+            this.cake.getFlavor(),
+            this.cake.getFilling(),
+            this.cake.getSize(),
+            this.cake.getLayer(),
+            this.cake.getFrostingType(),
+            this.cake.getFrostingFlavor(),
+            this.cake.getDecType(),
+            this.cake.getDecColor(),
+            this.cake.getCustomMessage(),
+            this.cake.getShape(),
+            this.cake.getAllergies(),
+            this.cake.getSpecialIngredients(),
+            this.cake.getPackageType()
         );
     }
 }

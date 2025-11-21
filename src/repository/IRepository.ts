@@ -1,24 +1,38 @@
+export type id=string;
 export interface ID {
-    getId(): string;
+    getId(): id;
 }
-export interface IRepository<T> {
+//TO apply solid principle i made thuis interface to make the repository intiazable
+export interface Intiazable{
+    /**
+     * Initialize the repository (e.g., connect to database)
+     *  * @returns Promise resolved when initialization is complete
+     * @throws {RepositoryInitializationException} if initialization fails
+     * @throws {DBException} if a database error occurs during initialization
+     */
+    init():Promise<void>;
+    
+}
+export interface IRepository<T extends ID> {
       /**
      * Create a new item.
      *
     
      * @template T- type of item managed by the repository
-     * @throws ItemInvalidException if the provided item fails validation
+     * @throws {ItemInvalidException }if the provided item fails validation
+     *  @throws {DBException} if a database error occurs during initialization
      */
     
-    create(item: T): Promise<ID>;
+    create(item: T): Promise<id>;
     /**
      * Retrieve an item by id.
      *
      * @param id - item identifier
      * @returns Promise resolving to the found item
-     * @throws ItemNotFoundException if no item exists with the given id
+     * @throws {ItemNotFoundException} if no item exists with the given id
+     *  @throws {DBException} if a database error occurs during initialization
      */
-    get(id:ID):Promise<T>;
+    get(id:id):Promise<T>;
      /**
      * Retrieve all items.
      *
@@ -30,8 +44,9 @@ export interface IRepository<T> {
      *
      * @param item - item to update
      * @returns Promise resolved when the update completes
-     * @throws ItemInvalidException if the provided item fails validation
-     * @throws ItemNotFoundException if the item to update does not exist
+     * @throws {ItemInvalidException} if the provided item fails validation
+     * @throws {ItemNotFoundException} if the item to update does not exist
+     *  @throws {DBException} if a database error occurs during initialization
      */
     update(item:T):Promise<void>;
   
@@ -40,7 +55,12 @@ export interface IRepository<T> {
      *
      * @param id - item identifier
      * @returns Promise resolved when the deletion completes
-     * @throws ItemNotFoundException if no item exists with the given id
+     * @throws {ItemNotFoundException }if no item exists with the given id
+     *  @throws {DBException} if a database error occurs during initialization
      */
-    delete(id:ID):Promise<void>;
+    delete(id:id):Promise<void>;
+}
+//i made this interface so i can us both repository and intiazable as user 
+export interface IRepoInit <T extends ID>extends IRepository<T>,Intiazable{
+
 }

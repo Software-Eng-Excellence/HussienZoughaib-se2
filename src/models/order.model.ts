@@ -1,5 +1,6 @@
-import { IItem } from "./Iitem"
-import { IOrder } from "./Iorder"
+import { id } from "repository/IRepository";
+import { IIdentfaibleItem, IItem } from "./Iitem"
+import { IIdentfaibleOrderItem, IOrder } from "./Iorder"
 
 export class Order implements IOrder {
     private id: string;
@@ -7,7 +8,7 @@ export class Order implements IOrder {
     private quantity: number;
     private price: number;
 
-    constructor(id: string, item: IItem, quantity: number = 1, price: number = 0) {
+    constructor(id: string, item: IItem, quantity: number , price: number ) {
         this.id = id;
         this.item = item;
         this.quantity = quantity;
@@ -25,5 +26,24 @@ export class Order implements IOrder {
     }
     getId(): string {
         return this.id;
+    }
+}
+export class InitOrder  implements IIdentfaibleOrderItem {
+   constructor(private id:string, private identitem:IIdentfaibleItem,  private quantity:number,  private price:number){
+    
+   }
+   
+    getQuantity(): number {
+      return this.quantity;
+    }
+    getPrice(): number {
+        return this.price;
+    }
+    getId(): id {
+     return this.id;
+    }
+    getItem(): IIdentfaibleItem  {
+        return this.identitem;
+      
     }
 }

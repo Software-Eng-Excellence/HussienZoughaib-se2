@@ -1,4 +1,8 @@
-import { IItem, ItemCategory } from "./Iitem";
+import { IIdentfaibleItem, IItem, ItemCategory } from "./Iitem";
+
+import { id } from "repository/IRepository";
+
+
 
 export class Book implements IItem {
     private title: string;

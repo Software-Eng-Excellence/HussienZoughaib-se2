@@ -1,5 +1,6 @@
-import { IItem } from "../Iitem";
-import { Order } from "../order.model";
+import { IIdentfaibleOrderItem } from "models/Iorder";
+import { IIdentfaibleItem, IItem } from "../Iitem";
+import { InitOrder, Order } from "../order.model";
 
 export class OrderBuilder {
         private id!: string;
@@ -46,3 +47,31 @@ export class OrderBuilder {
           
         }
 }
+export class IdentfOrderBuilder{
+       private item!: IIdentfaibleItem;
+      private order!:Order
+    static createBuilder():IdentfOrderBuilder{
+        return new IdentfOrderBuilder();
+    }
+    setItem(item:IIdentfaibleItem):IdentfOrderBuilder{  
+        this.item=item;
+        return this;
+    }
+
+        // Set the item (IItem)
+        setOrder(order: Order): IdentfOrderBuilder {
+            this.order = order;
+            return this;
+        }
+              
+          build():InitOrder{
+       
+        if(!this.item || !this.order){
+            throw new Error("Missing required fields to build IdentfOrder");
+        }
+       
+            return new InitOrder(this.order.getId(),this.item,this.order.getQuantity(),this.order.getPrice());
+    }
+
+    }
+  

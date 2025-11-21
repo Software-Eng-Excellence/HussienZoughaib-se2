@@ -36,10 +36,9 @@
   "dependencies": {
     "csv-stringify": "^6.6.0",
     "dotenv": "^17.2.1",
-
     "fast-xml-parser": "^5.2.5",
-
-    "fast-xml-parser": "^5.2.5",
+    "sqlite": "^5.1.1",
+    "sqlite3": "^5.1.7",
     "winston": "^3.17.0",
     "winston-daily-rotate-file": "^5.0.0"
   }

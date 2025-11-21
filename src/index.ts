@@ -1,4 +1,3 @@
-
 import logger from './util/logger';
 
 import { parseCSV } from './util/parser';
@@ -8,13 +7,21 @@ import { parseXml } from './util/xmlParser';
 import { ToyMapper } from './mappers/Toy.mapper'; // fixed relative import
 import { parseJSON } from './util/jsonParser';
 import { BookMapper } from './mappers/Book.mapper';
-import { CakeOrderRep } from './repository/CakeOrder.Rep';
+import { CakeOrderRep } from './repository/file/CakeOrder.Rep';
+import {Database} from 'sqlite3';
+import { open } from 'sqlite';
+import config from './config';
+import { Orderrepo } from './repository/sqlite/Orderrepo';
+import { CakeOrderRepo } from './repository/sqlite/CakeOrder.Repo';
+import { CakeBuilder, IndentCakeBuilder } from './models/builder/Cake.builder';
+import { IdentfOrderBuilder, OrderBuilder } from './models/builder/Order.builder';
+import { Order } from 'models/order.model';
 
 async function main() {
     try {
     ;
-        const data = new CakeOrderRep("src/data/Cake orders.csv");
-        const list_ordres = await data.getALL();
+        const data = new CakeOrderRep(config.Storage.CSV.cake);
+        const list_ordres = await data.get("1");
       
         logger.info("Cakes order successfully:");
         logger.info('list of cakes:\n %o', list_ordres); // fixed newline
@@ -72,6 +79,55 @@ async function main_3(){
         logger.error(error);
     }
 }
-main();
+async function DBsandbox(){
+    try{
+
+        const order_Repo=new Orderrepo(new CakeOrderRepo());
+    await order_Repo.init();
+     const cake=CakeBuilder.createBuilder()
+     .setType("Birthday")
+     .setFlavor("Chocolate")
+     .setFilling("Cream")
+     .setSize(8)
+     .setLayer(2)
+     .setFrostingType("Buttercream")
+     .setFrostingFlavor("Vanilla")
+     .setDecType("Sprinkles")
+     .setDecColor("Rainbow")
+     .setCustomMessage("Happy Birthday!")
+     .setShape("Round")
+     .setAllergies("Nut-Free")         // required by builder
+     .setSpIng("Organic Ingredients")   // required by builder (spIng)
+     .setPackageType("Standard Box")    // required by builder
+     .build();
+        const indentCake=IndentCakeBuilder.createBuilder()
+        .setId("cake-001")
+        .setCake(cake)
+        .build();
+       ;
+
+       ;
+ const order1=OrderBuilder.createBuilder().setPrice(29.99).setItem(cake).setQuantity(2).setId("124").build();
+ const identforde1r=IdentfOrderBuilder.createBuilder().setOrder(order1).setItem(indentCake).build();
+
+  const id=await order_Repo.create(identforde1r);
+
+ logger.info("Order created successfully");
+console.log(await order_Repo.get(id));
+console.log(await order_Repo.getALL());
+await order_Repo.delete(id);
+console.log('deleted suces');
+console.log(await order_Repo.getALL());
+
+    }
+    catch(error){
+        logger.error(error);
+    }
+ 
+
+    } 
+
+DBsandbox().catch((error)=>logger.error(error));
+//main();
 //main_2();
 //main_3();

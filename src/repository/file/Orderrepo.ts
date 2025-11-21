@@ -1,8 +1,8 @@
-import logger from "../util/logger";
+import logger from "../../util/logger";
 
-import { ID, IRepository } from "../repository/IRepository";
-import { InvalidItemException, ItemNotFoundException } from "../util/exceptions/RepoException";
-import { IOrder } from "../models/Iorder";
+import { id, ID, IRepository } from "../IRepository";
+import { InvalidItemException, ItemNotFoundException } from "../../util/exceptions/RepoException";
+import { IOrder } from "../../models/Iorder";
 
 //since every order repo will have itsbown laod and save method i will make this class abstract and exyend itbim every type
 export  abstract class Orderrepo implements IRepository<IOrder> {
@@ -10,7 +10,7 @@ export  abstract class Orderrepo implements IRepository<IOrder> {
     
    protected abstract save(orders:IOrder[]):Promise<void>;
     
-     async create(item: IOrder): Promise<ID> {
+     async create(item: IOrder): Promise<id> {
         if(!item){
             logger.error("Invalid order item");
             throw new InvalidItemException("Invalid order item");
@@ -22,17 +22,17 @@ export  abstract class Orderrepo implements IRepository<IOrder> {
         //save orders
         await this.save(orders);
         logger.info(`Order with id ${item.getId()} created successfully`);
-        return {getId:()=>String(id)};
+        return String(id);
         
     }
-     async get(id: ID): Promise<IOrder> {
+     async get(id: string): Promise<IOrder> {
         const orders= await this.load();
-        const order= orders.find(o=>o.getId()===id.getId());
+        const order= orders.find(o=>o.getId()===id);
         if(!order){
-            logger  .error(`Order with id ${id.getId()} not found`);
-            throw new ItemNotFoundException(`Order with id ${id.getId()} not found`);
+            logger  .error(`Order with id ${id} not found`);
+            throw new ItemNotFoundException(`Order with id ${id} not found`);
         }
-        logger.info(`Order with id ${id.getId()} retrieved successfully`);
+        logger.info(`Order with id ${id} retrieved successfully`);
         return order;
     }
      async  getALL(): Promise<IOrder[]> {
@@ -59,16 +59,16 @@ export  abstract class Orderrepo implements IRepository<IOrder> {
         await this.save(orders);
         logger.info(`Order with id ${item.getId()} updated successfully`);
     }
-     async delete(id: ID): Promise<void> {
+     async delete(id: id): Promise<void> {
         const orders=await this.load();
-        const index= orders.findIndex(o=>o.getId()===id.getId());
+        const index= orders.findIndex(o=>o.getId()===id);
         if(index===-1){
-            logger.error(`Order with id ${id.getId()} not found`);
-            throw new ItemNotFoundException(`Order with id ${id.getId()} not found`);
+            logger.error(`Order with id ${id} not found`);
+            throw new ItemNotFoundException(`Order with id ${id} not found`);
         }
         orders.splice(index,1);
         await this.save(orders);
-        logger.info(`Order with id ${id.getId()} deleted successfully`);
+        logger.info(`Order with id ${id} deleted successfully`);
     }
     
 }
