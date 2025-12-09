@@ -118,7 +118,7 @@ export class IintCake  extends Cake implements  IIdentfaibleItem{
     constructor(
         private id: id,
         type: string,
-        flavor: string,
+         flavor: string,
         filling: string,
         size: number,
         layer: number,

@@ -72,3 +72,23 @@ export class Book implements IItem {
         return ItemCategory.Book;
     }
 }
+export class INITBook extends Book implements IIdentfaibleItem{
+    constructor(
+        private id:string,
+          title: string,
+        author: string,
+        genre: string,
+        format: string,
+        language: string,
+        publisher: string,
+        edition: string,
+        packaging: string
+    ){
+        super(title,author,genre,format,language,publisher,edition,packaging);
+        }
+
+    getId(): id {
+       return this.id;
+    }
+    
+}

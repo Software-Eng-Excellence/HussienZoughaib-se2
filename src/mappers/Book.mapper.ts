@@ -1,6 +1,6 @@
-import { Book } from "../models/Book.model";
+import { Book, INITBook } from "../models/Book.model";
 import { IMapper } from "./IMapper";
-import { BookBuilder } from "../models/builder/Book.builder";
+import { BookBuilder, IDENBookBuilder } from "../models/builder/Book.builder";
 
 export class BookMapper implements IMapper<string[], Book> {
     map(input: string[]): Book {
@@ -28,4 +28,34 @@ export class BookMapper implements IMapper<string[], Book> {
             input.getPackaging()
         ];
     }
+}
+export interface  SQLBOOK{
+      id:string,
+          title: string,
+        author: string,
+        genre: string,
+        format: string,
+        language: string,
+        publisher: string,
+        edition: string,
+        packaging: string   
+}
+export class SQLBOOKMAPPER implements IMapper<SQLBOOK,INITBook>{
+    map(input: SQLBOOK): INITBook {
+     return IDENBookBuilder.createBuilder().setBook(
+        BookBuilder.createBuilder().setTitle(input.title)
+        .setAuthor(input.author)
+        .setGenre(input.genre)
+        .setFormat(input.language)
+        .setLanguage(input.language)
+        .setPublisher(input.publisher)
+        .setEdition(input.edition)
+        .setPackaging(input.packaging)
+        .build()
+     ).setId(input.id).build();
+    }
+    reversemap(input: INITBook): SQLBOOK {
+        throw new Error("Method not implemented.");
+    }
+
 }

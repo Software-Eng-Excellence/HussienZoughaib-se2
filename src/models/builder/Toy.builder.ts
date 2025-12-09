@@ -1,4 +1,5 @@
-import { Toy } from "../Toy.model";
+import logger from "../../util/logger";
+import { IintToy, Toy } from "../Toy.model";
 export class ToyBuilder {
       private type!: string;
     private ageGroup!: number;
@@ -62,4 +63,40 @@ export class ToyBuilder {
             this.educational
         );
     }
+}
+export class IdentfToyBuilder{
+    id!:string;
+    toy!:Toy;
+    static createBuilder():IdentfToyBuilder{
+        return new IdentfToyBuilder();
+    }
+      setId(id:string):IdentfToyBuilder{
+        this.id=id;
+        return this;
+    }
+    setToy(toy:Toy):IdentfToyBuilder{
+        this.toy=toy;
+        return this;
+    }
+    build():IintToy{
+        if(!this.id){
+            logger.error("Missing id for IintToy");
+            throw new Error("Missing id for IinToy");
+        }
+        if(!this.toy){
+            logger.error("Missing Cake for IintCake");
+            throw new Error("Missing Cake for IintCake");
+        }
+        return new IintToy(
+            this.id,
+            this.toy.getType(),
+            this.toy.getAgeGroup(),
+            this.toy.getBrand(),
+            this.toy.getMaterial(),
+            this.toy.isBatteriesRequired(),
+            this.toy.isEducational()   
+        );
+    }
+
+
 }

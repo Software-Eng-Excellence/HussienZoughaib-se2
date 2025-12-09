@@ -1,5 +1,7 @@
-import { Book } from "../Book.model";
+import { Book, INITBook } from "../Book.model";
 import loggger from "../../util/logger";
+import logger from "../../util/logger";
+import { IintToy } from "models/Toy.model";
 export class BookBuilder {
   private title!: string;
   private author!: string;
@@ -79,4 +81,46 @@ export class BookBuilder {
         this.packaging
     );
   }
+}
+export class IDENBookBuilder {
+  private id!:string;
+  private book!:Book;
+   static createBuilder():IDENBookBuilder{
+        return new IDENBookBuilder();
+    }
+    setId(id:string):IDENBookBuilder{
+        this.id=id;
+        return this;
+    }
+    setBook(book:Book):IDENBookBuilder{
+      this.book=book;
+      return this;
+
+
+    }
+       build():INITBook{
+        if(!this.id){
+            logger.error("Missing id for IintCake");
+            throw new Error("Missing id for IintCake");
+        }
+        if(!this.book){
+            logger.error("Missing Cake for IintCake");
+            throw new Error("Missing Cake for IintCake");
+        }
+        return new INITBook(
+            this.id,
+             this.book.getTitle(),
+             this.book.getAuthor(),
+             this.book.getGenre(),
+             this.book.getFormat(),
+             this.book.getLanguage(),
+             this.book.getPublisher(),
+             this.book.getEdition(),
+             this.book.getCategory());
+
+    }
+
+
+
+
 }
