@@ -21,6 +21,8 @@ import { ToyOrderRepo } from './repository/Postgr sql/ToyOrder.Repo';
 import { IdentfToyBuilder, ToyBuilder } from './models/builder/Toy.builder';
 import { BookRep } from './repository/Postgr sql/Book.Repo';
 import { BookBuilder, IDENBookBuilder } from './models/builder/Book.builder';
+import { DBMode, RepositoryFactory } from './repository/Repo.factory';
+import { ItemCategory } from '././models/Iitem';
 
 
 
@@ -89,8 +91,8 @@ async function main_3(){
 async function DBsandbox(){
     try{
 
-        const order_Repo=new Orderrepo(new CakeOrderRepo());
-    await order_Repo.init();
+        const order_Repo=await RepositoryFactory.create( DBMode.SQLITE,ItemCategory.Cake);
+
      const cake=CakeBuilder.createBuilder()
      .setType("Birthday")
      .setFlavor("Chocolate")
@@ -251,8 +253,8 @@ async function DBsandbox_2() {
         logger.error(error);
     }
 }
-DBsandbox_2()
+//DBsandbox_2()
 //DBsandbox().catch((error)=>logger.error(error));
-//main();
+main();
 //main_2();
 //main_3();
