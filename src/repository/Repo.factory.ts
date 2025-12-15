@@ -6,11 +6,16 @@ import { Orderrepo } from "./sqlite/Orderrepo";
 import { CakeOrderRepo } from "./sqlite/CakeOrder.Repo";
 import config from "../config";
 import { CakeOrderRep } from "./file/CakeOrder.Rep";
+import { Orderrep } from "./Postgr sql/Order.Repo";
+import { CakeOrderRepp } from "./Postgr sql/CakeOrder.Repo";
+import { BookRep } from "./Postgr sql/Book.Repo";
+import { ToyOrderRepo } from "./Postgr sql/ToyOrder.Repo";
 
 // repository/RepositoryFactory.ts
 export enum DBMode {
     SQLITE,
-    FILE
+    FILE,
+    PostgrSQL
 }
 
 export class RepositoryFactory {
@@ -23,16 +28,46 @@ export class RepositoryFactory {
                     case ItemCategory.Cake:
                         repository = new Orderrepo(new CakeOrderRepo());
                         break;
+                    case ItemCategory.Book:
+                        repository = new Orderrepo(new CakeOrderRepo());
+
+                        break;
+                    case ItemCategory.Toy:
+                        repository = new Orderrepo(new CakeOrderRepo());
+                        break;
                         default:
                             throw new Error("Unsupported category");
                     }
                 await repository.init();
                 return repository;
             }
+            case DBMode.PostgrSQL:{
+                let repository: IRepository<IOrder> & Intiazable;
+                switch (category) {
+                    case ItemCategory.Cake:
+                        repository = new Orderrep(new CakeOrderRepp());
+                        break;
+                    case ItemCategory.Book:
+                        repository = new Orderrep(new BookRep());
+                        break;
+                    case ItemCategory.Toy:
+                        repository = new Orderrep(new ToyOrderRepo());
+                        break;
+                        default:
+                            throw new Error("Unsupported category");
+                    }
+                await repository.init();
+                return repository;
+
+            }
+
+      
             case DBMode.FILE:
                 switch (category) {
                     case ItemCategory.Cake:
                         return new CakeOrderRep(config.Storage.CSV.cake);
+                        break;
+                  
                     default:
                         throw new Error("Unsupported category");
                 }
