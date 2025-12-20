@@ -1,0 +1,183 @@
+openapi: 3.0.3
+info:
+  title: Analytics Service API
+  description: REST API for providing business analytics insights related to orders, revenue, and pricing.
+  version: 1.0.0
+
+servers:
+  - url: https://api.example.com
+
+paths:
+
+  /api/analytics/orders/total:
+    get:
+      summary: Get total number of orders
+      description: Returns the total number of orders created in the system.
+      tags: [Analytics]
+      responses:
+        "200":
+          description: Total orders retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  totalOrders:
+                    type: integer
+                    example: 1250
+        "500":
+          description: Internal server error
+
+  /api/analytics/orders/by-item-type:
+    get:
+      summary: Get number of orders per item type
+      description: Returns the number of orders grouped by item type.
+      tags: [Analytics]
+      responses:
+        "200":
+          description: Orders per item type retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ordersByItemType:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        itemType:
+                          type: string
+                          example: cakes
+                        orderCount:
+                          type: integer
+                          example: 320
+        "500":
+          description: Internal server error
+
+  /api/analytics/revenue/total:
+    get:
+      summary: Get total revenue
+      description: Returns the total revenue generated from all orders.
+      tags: [Analytics]
+      responses:
+        "200":
+          description: Total revenue retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  totalRevenue:
+                    type: number
+                    format: float
+                    example: 45890.75
+                  currency:
+                    type: string
+                    example: USD
+        "500":
+          description: Internal server error
+
+  /api/analytics/revenue/by-item-type:
+    get:
+      summary: Get revenue breakdown by item type
+      description: Returns revenue grouped by item type.
+      tags: [Analytics]
+      responses:
+        "200":
+          description: Revenue by item type retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  revenueByItemType:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        itemType:
+                          type: string
+                          example: books
+                        revenue:
+                          type: number
+                          format: float
+                          example: 15230.50
+                        currency:
+                          type: string
+                          example: USD
+        "500":
+          description: Internal server error
+
+  # -------- ADDITIONAL ANALYTICS 1 --------
+  /api/analytics/items/top-selling:
+    get:
+      summary: Get top selling item types
+      description: Returns item categories ordered by number of orders (highest first).
+      tags: [Analytics]
+      parameters:
+        - name: limit
+          in: query
+          description: Number of top categories to return
+          required: false
+          schema:
+            type: integer
+            example: 3
+      responses:
+        "200":
+          description: Top selling item types retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  topSellingItemTypes:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        itemType:
+                          type: string
+                          example: clothing
+                        orderCount:
+                          type: integer
+                          example: 540
+        "400":
+          description: Invalid limit parameter
+        "500":
+          description: Internal server error
+
+  # -------- ADDITIONAL ANALYTICS 2 --------
+  /api/analytics/items/cheapest-by-category:
+    get:
+      summary: Get cheapest item per category
+      description: Returns the cheapest priced item for each item category.
+      tags: [Analytics]
+      responses:
+        "200":
+          description: Cheapest items retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  cheapestItemsByCategory:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        category:
+                          type: string
+                          example: cakes
+                        itemName:
+                          type: string
+                          example: Chocolate Cupcake
+                        price:
+                          type: number
+                          format: float
+                          example: 2.50
+                        currency:
+                          type: string
+                          example: USD
+        "500":
+          description: Internal server error
