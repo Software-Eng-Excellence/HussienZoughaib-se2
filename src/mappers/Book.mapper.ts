@@ -45,7 +45,7 @@ export class SQLBOOKMAPPER implements IMapper<SQLBOOK,INITBook>{
      return IDENBookBuilder.createBuilder().setBook(
         BookBuilder.createBuilder().setTitle(input.title)
         .setAuthor(input.author)
-        .setGenre(input.genre)
+        .setGenre(input.genre)  
         .setFormat(input.language)
         .setLanguage(input.language)
         .setPublisher(input.publisher)
