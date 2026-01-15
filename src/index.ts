@@ -137,13 +137,11 @@ console.log(await order_Repo.getALL());
     } 
 async function DBsandbox_2() {
     try {
-        const order_Repo = new Orderrep(new CakeOrderRepp());
-        const Order_Repo_2 = new Orderrep(new ToyOrderRepo());
-        const Order_Repo3=new Orderrep(new BookRep());
+        const order_Repo = await RepositoryFactory.create(DBMode.PostgrSQL, ItemCategory.Cake);
+        const Order_Repo_2 = await RepositoryFactory.create(DBMode.PostgrSQL, ItemCategory.Toy);
+        const Order_Repo3=await RepositoryFactory.create(DBMode.PostgrSQL,ItemCategory.Book);
 
-        await order_Repo.init();
-        await Order_Repo_2.init();
-        await Order_Repo3.init();
+  
 
         // ---- Create Cake ----
         const cake = CakeBuilder.createBuilder()
@@ -253,8 +251,8 @@ async function DBsandbox_2() {
         logger.error(error);
     }
 }
-//DBsandbox_2()
+DBsandbox_2()
 //DBsandbox().catch((error)=>logger.error(error));
-main();
+//main();
 //main_2();
 //main_3();
