@@ -4,7 +4,7 @@ import { id, Intiazable, IRepository } from "../../repository/IRepository";
 import { ConnectionManager } from "./ConnectionManager";
 import { DBException, ItemNotFoundException, RepositoryInitializationException } from "../../util/exceptions/RepoException";
 import logger from "../../util/logger";
-import { SQLBOOK, SQLBOOKMAPPER } from "../../mappers/Book.mapper";
+import { Sqlbook, SQLBOOKMAPPER } from "../../mappers/Book.mapper";
 
 const table_name=ItemCategory.Book; 
  
@@ -102,7 +102,7 @@ export class BookRep implements IRepository<INITBook>, Intiazable {
         try {
             connection = await ConnectionManager.getConnection();
 
-            const result = await connection.query<SQLBOOK>(GET_BOOK_BY_ID, [id]);
+            const result = await connection.query<Sqlbook>(GET_BOOK_BY_ID, [id]);
             const target = result.rows[0];
 
             if (!target) {
@@ -126,7 +126,7 @@ export class BookRep implements IRepository<INITBook>, Intiazable {
         try {
             connection = await ConnectionManager.getConnection();
 
-            const result = await connection.query<SQLBOOK>(Get_BOOK);
+            const result = await connection.query<Sqlbook>(Get_BOOK);
             const mapper = new SQLBOOKMAPPER();
 
             return result.rows.map(row => mapper.map(row));

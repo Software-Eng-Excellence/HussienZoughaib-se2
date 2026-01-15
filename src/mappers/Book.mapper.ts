@@ -29,7 +29,7 @@ export class BookMapper implements IMapper<string[], Book> {
         ];
     }
 }
-export interface  SQLBOOK{
+export interface  Sqlbook{
       id:string,
           title: string,
         author: string,
@@ -40,13 +40,13 @@ export interface  SQLBOOK{
         edition: string,
         packaging: string   
 }
-export class SQLBOOKMAPPER implements IMapper<SQLBOOK,INITBook>{
-    map(input: SQLBOOK): INITBook {
+export class SQLBOOKMAPPER implements IMapper<Sqlbook,INITBook>{
+    map(input: Sqlbook): INITBook {
      return IDENBookBuilder.createBuilder().setBook(
         BookBuilder.createBuilder().setTitle(input.title)
         .setAuthor(input.author)
         .setGenre(input.genre)
-        .setFormat(input.language)
+        .setFormat(input.format)
         .setLanguage(input.language)
         .setPublisher(input.publisher)
         .setEdition(input.edition)
@@ -54,7 +54,7 @@ export class SQLBOOKMAPPER implements IMapper<SQLBOOK,INITBook>{
         .build()
      ).setId(input.id).build();
     }
-    reversemap(input: INITBook): SQLBOOK {
+    reversemap(input: INITBook): Sqlbook {
         throw new Error("Method not implemented.");
     }
 
