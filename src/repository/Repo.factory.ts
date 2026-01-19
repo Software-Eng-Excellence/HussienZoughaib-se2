@@ -1,4 +1,4 @@
-import { IOrder } from "../models/Iorder";
+import { IIdentfaibleOrderItem, IOrder } from "../models/Iorder";
 import { IRepository } from "./IRepository";
 import { ItemCategory } from "../models/Iitem";
 import { Intiazable } from "./IRepository";
@@ -20,10 +20,10 @@ export enum DBMode {
 
 export class RepositoryFactory {
 
-    public static async create(mode : DBMode, category: ItemCategory): Promise<IRepository<IOrder>> {
+    public static async create(mode : DBMode, category: ItemCategory): Promise<IRepository<IIdentfaibleOrderItem>> {
         switch (mode) {
             case DBMode.SQLITE: {
-                let repository: IRepository<IOrder> & Intiazable;
+                let repository: IRepository<IIdentfaibleOrderItem> & Intiazable;
                 switch (category) {
                     case ItemCategory.Cake:
                         repository = new Orderrepo(new CakeOrderRepo());
@@ -42,7 +42,7 @@ export class RepositoryFactory {
                 return repository;
             }
             case DBMode.PostgrSQL:{
-                let repository: IRepository<IOrder> & Intiazable;
+                let repository: IRepository<IIdentfaibleOrderItem> & Intiazable;
                 switch (category) {
                     case ItemCategory.Cake:
                         repository = new Orderrep(new CakeOrderRepp());
@@ -61,13 +61,10 @@ export class RepositoryFactory {
 
             }
 
-      
+            //you make it clear that file repo is manzu3 and fix later 
             case DBMode.FILE:
                 switch (category) {
-                    case ItemCategory.Cake:
-                        return new CakeOrderRep(config.Storage.CSV.cake);
-                        break;
-                  
+                   
                     default:
                         throw new Error("Unsupported category");
                 }

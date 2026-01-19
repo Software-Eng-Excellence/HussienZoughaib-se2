@@ -1,10 +1,12 @@
 import logger from "./util/logger";
 import config from "./config";
-import express  from "express";
+import express, { Request, Response, NextFunction } from "express";
 import helmet from "helmet";
 import bodyParser from "body-parser";
 import cors from "cors";
 import reqeustloegger from "./midlleware/requestLogger";
+import router from "./router/index";
+import { ApiException } from "./util/exceptions/ApiException";
 const app=express();
 //for security headers
 app.use(helmet());
@@ -21,6 +23,21 @@ app.use(reqeustloegger);
 app.listen(config.port,config.host,()=>{
     logger.info(`Server is running at http://${config.host}:${config.port}`);
 });
-app.get('/',(req,res)=>{
-    res.send('Hello World!');
+app.use('/',router);
+//404 handler
+app.use((req,res)=>{
+    res.status(404).json({error:'Not Found'});
+})
+//make and error hadnler
+app.use((err:Error, req:Request, res:Response, next:NextFunction)=>{
+  if(err instanceof ApiException) {
+    const apiError=err as ApiException;
+    logger.error(`API Error of status %d: %s`,apiError.status, err.message);
+    res.status(apiError.status).json({error:apiError.message});
+
+    
+  } else {
+    logger.error(`Error occurred: ${err.message}`);
+    res.status(500).json({error:'Internal Server Error'});
+  }
 });
