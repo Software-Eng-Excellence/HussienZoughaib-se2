@@ -1,11 +1,11 @@
-import { DBMode, RepositoryFactory } from "repository/Repo.factory";
+import { DBMode, RepositoryFactory } from "../repository/Repo.factory";
 
 import { ServiceException } from "../util/exceptions/ServiceException";
 
 
 
-import { IIdentfaibleOrderItem } from "models/Iorder";
-import { ItemCategory } from "models/Iitem";
+import { IIdentfaibleOrderItem } from "../models/Iorder";
+import { ItemCategory } from "../models/Iitem";
 
 export class OrderManagement {
     //create
@@ -15,7 +15,7 @@ export class OrderManagement {
    
         //persist the order to the database'
        const repo=await this.getRepositoryByCategory(order.getItem().getCategory());
-       repo.create(order);
+        await repo.create(order);
        return order;
 
         
@@ -84,6 +84,74 @@ export class OrderManagement {
         const orders=await this.getAll();
         return orders.length;
     }
+public async groupOrdersByCategory(): Promise<{
+    totalOrders: number;
+    byCategory: Record<ItemCategory, number>;
+}> {
+    const byCategory: Record<ItemCategory, number> = {
+        [ItemCategory.Cake]: 0,
+        [ItemCategory.Book]: 0,
+        [ItemCategory.Toy]: 0,
+    };
+
+    let totalOrders = 0;
+
+    const categories = Object.values(ItemCategory);
+
+    for (const category of categories) {
+        const repo = await RepositoryFactory.create(DBMode.SQLITE, category);
+
+        // get total per category using the repo logic
+        const count = await repo.getALL();
+
+        byCategory[category] = count.length;
+        totalOrders += count.length;
+    }
+
+    return {
+        totalOrders,
+        byCategory
+    };
+}
+
+
+public async GenerateRevenueByCategory(): Promise<{
+    byCategory: Record<ItemCategory, number>;
+}> {
+    const byCategory: Record<ItemCategory, number> = {
+        [ItemCategory.Cake]: 0,
+        [ItemCategory.Book]: 0,
+        [ItemCategory.Toy]: 0,
+    };
+
+    const categories = Object.values(ItemCategory);
+    
+    for (const category of categories) {
+        const repo = await RepositoryFactory.create(DBMode.SQLITE, category);
+        // Get orders for this specific category from the repository
+        const orders = await repo.getALL();
+        
+        // Calculate revenue for this specific category
+        let revenuePerCategory = 0;
+        for (const order of orders) {
+            revenuePerCategory += order.getPrice() * order.getQuantity();
+        }
+        
+        byCategory[category] = revenuePerCategory;
+    }
+
+    return {
+        byCategory
+    };
+}
+
+
+
+
+
+
+
+    
     private validateOrder(order:IIdentfaibleOrderItem):void{
         if(!order.getItem() || order.getQuantity() <= 0 || order.getPrice() <= 0){
             throw new ServiceException("Invalid order data");
