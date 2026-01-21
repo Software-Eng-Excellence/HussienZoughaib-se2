@@ -7,6 +7,7 @@ import cors from "cors";
 import reqeustloegger from "./midlleware/requestLogger";
 import router from "./router/index";
 import { ApiException } from "./util/exceptions/ApiException";
+import { OrderManagement } from "./service/OrderMangmnet"
 const app=express();
 //for security headers
 app.use(helmet());
@@ -18,6 +19,17 @@ app.use(bodyParser.urlencoded({extended:true}));
 app.use(cors({
     origin:'*'//in production, specify allowed origins
 }))
+
+
+async function runAnalyticsTest() {
+    const analyticsService = new OrderManagement();
+    const result = await analyticsService.groupOrdersByCategory();
+    logger.info("Grouped orders by category:");
+   logger.info(JSON.stringify(result, null, 2));
+
+}
+
+runAnalyticsTest().catch(err => logger.error(err))
 //adding request handler mdidleware
 app.use(reqeustloegger);
 app.listen(config.port,config.host,()=>{
