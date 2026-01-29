@@ -26,6 +26,7 @@ export class RepositoryFactory {
                 let repository: IRepository<IIdentfaibleOrderItem> & Intiazable;
                 switch (category) {
                     case ItemCategory.Cake:
+                        console.log("Creating SQLITE CakeOrderRepo",ItemCategory.Cake);
                         repository = new Orderrepo(new CakeOrderRepo());
                         break;
                     case ItemCategory.Book:

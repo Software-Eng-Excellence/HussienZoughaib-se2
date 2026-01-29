@@ -182,7 +182,8 @@ export class Orderrepo implements IRepository<IIdentfaibleOrderItem>, Intiazable
             connection= await ConnectionManager.getConnection();
 
               connection.exec('BEGIN TRANSACTION;');
-              await this.itemRepo.delete(id);
+              const item_id=(await this.get(id)).getItem().getId();
+              await this.itemRepo.delete(item_id);
               await connection.run(DELETE_ORDER_BY_ID,id);
                connection.exec('COMMIT;');
 

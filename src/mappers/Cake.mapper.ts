@@ -105,4 +105,53 @@ export class SQLITCAKEMAPPER implements IMapper<SqlCake,IintCake>{
 }
 
     }
+
+
+export class JsonCakeMapper implements IMapper<any, IintCake> {
+    
+    map(input: any): IintCake {
+        const cake=CakeBuilder.createBuilder()
+            .setType(input.type)
+            .setFlavor(input.flavor)
+            .setFilling(input.filling)
+            .setSize(input.size)
+            .setLayer(input.layers)
+            .setFrostingType(input.frosting_type)
+            .setFrostingFlavor(input.frosting_flavor)
+            .setDecType(input.decoration_type)
+            .setDecColor(input.decoration_color)
+            .setCustomMessage(input.custom_message)
+            .setShape(input.shape)
+            .setAllergies(input.allergies)
+            .setSpIng(input.special_ingredients)
+            .setPackageType(input.package_type)
+            .build();
+        return IndentCakeBuilder.createBuilder()
+            .setId(input.id)
+            .setCake(cake)
+            .build();
+
+    }
+    reversemap(input: IintCake) :any{
+        return {
+            id: input.getId(),
+            type: input.getType(),
+            flavor: input.getFlavor(),
+            filling: input.getFilling(),
+            size: input.getSize(),
+            layers: input.getLayer(),
+            frosting_type: input.getFrostingType(),
+            frosting_flavor: input.getFrostingFlavor(),
+            decoration_type: input.getDecType(),
+            decoration_color: input.getDecColor(),
+            custom_message: input.getCustomMessage(),
+            shape: input.getShape(),
+            allergies: input.getAllergies(),
+            special_ingredients: input.getSpecialIngredients(),
+            package_type: input.getPackageType()
+        };
+        };
+    
+    }
+
     

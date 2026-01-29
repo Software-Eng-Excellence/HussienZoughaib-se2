@@ -6,8 +6,8 @@ import bodyParser from "body-parser";
 import cors from "cors";
 import reqeustloegger from "./midlleware/requestLogger";
 import router from "./router/index";
-import { ApiException } from "./util/exceptions/ApiException";
-import { OrderManagement } from "./service/OrderMangmnet"
+import { HttpException } from "./util/exceptions/http/HttpExceptions";
+
 const app=express();
 //for security headers
 app.use(helmet());
@@ -21,15 +21,15 @@ app.use(cors({
 }))
 
 
-async function runAnalyticsTest() {
+/*async function runAnalyticsTest() {
     const analyticsService = new OrderManagement();
     const result = await analyticsService.groupOrdersByCategory();
     logger.info("Grouped orders by category:");
    logger.info(JSON.stringify(result, null, 2));
 
 }
-
-runAnalyticsTest().catch(err => logger.error(err))
+*/
+/*runAnalyticsTest().catch(err => logger.error(err))*/
 //adding request handler mdidleware
 app.use(reqeustloegger);
 app.listen(config.port,config.host,()=>{
@@ -41,15 +41,21 @@ app.use((req,res)=>{
     res.status(404).json({error:'Not Found'});
 })
 //make and error hadnler
-app.use((err:Error, req:Request, res:Response, next:NextFunction)=>{
-  if(err instanceof ApiException) {
-    const apiError=err as ApiException;
-    logger.error(`API Error of status %d: %s`,apiError.status, err.message);
-    res.status(apiError.status).json({error:apiError.message});
-
-    
-  } else {
-    logger.error(`Error occurred: ${err.message}`);
-    res.status(500).json({error:'Internal Server Error'});
-  }
-});
+// After: Enhanced Global Error Handler
+app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
+    if ( err instanceof HttpException) {
+        const httpException = err as HttpException;
+        // Log includes name, status, message, and details
+        logger.error(" %s [%d] \"%s\" %o", httpException.name, httpException.status, httpException.message, httpException.details || {});
+        // Response includes message and details
+        res.status(httpException.status).json({
+            message: httpException.message,
+            details: httpException.details || undefined
+        });
+    } else {
+        logger.error("Unhandled Error: %s", err.message);
+        res.status(500).json({ 
+            message: "Internal Server Error"
+        });
+    }
+})

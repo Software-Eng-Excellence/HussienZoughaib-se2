@@ -1,9 +1,9 @@
 import { Router } from "express";
+import OrderRouter from './order.rout'
 
 const router=Router();
 
 // Define your routes here
-router.get('/', (req, res) => {
-    res.send('Hello from the router!');
-});
+    router.use('/orders', OrderRouter);
+
 export default router;

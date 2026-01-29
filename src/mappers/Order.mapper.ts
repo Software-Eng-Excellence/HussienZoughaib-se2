@@ -5,6 +5,8 @@ import { IIdentfaibleItem, IItem } from "models/Iitem";
 import { InitOrder } from "models/order.model";
 
 
+
+
 export class CSVOrderMapper implements IMapper<string[], IOrder> {
         constructor(private itemMapper: IMapper<string[], IItem>) {
 
@@ -72,4 +74,45 @@ export class SQLORDERMAPPER implements IMapper<{ data: SQLOrder; item: IIdentfai
             item:input.getItem()
         };
     }
+}
+export interface JsonItem {
+id: string;
+}
+
+export interface JsonOrder {
+    id: string;
+    catigory: string;
+    item: IIdentfaibleItem;
+    quantity: number;
+    price: number;
+}
+export class JsonRequestOrderMapper implements IMapper<any,IIdentfaibleOrderItem>{
+    constructor(private itemMapper:IMapper<any,IIdentfaibleItem>){
+
+    }
+    map(input: any): IIdentfaibleOrderItem {
+        //extratct and item and build and identfibale ite,
+        const item=this.itemMapper.map(input.item);
+        //build an order
+        const order=OrderBuilder.createBuilder()
+            .setId(input.id)
+            .setPrice(input.price)
+            .setQuantity(input.quantity)
+            .setItem(item)
+            .build();
+
+        //return identfiable order item
+    return IdentfOrderBuilder.createBuilder()
+        .setOrder(order)
+        .setItem(item)
+        .build();
+  
+    }
+    reversemap(input: IIdentfaibleOrderItem) {
+        return{
+            category:input.getItem().getCategory(),
+            ...input
+        }
+    }
+
 }

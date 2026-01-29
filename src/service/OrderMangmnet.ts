@@ -7,6 +7,9 @@ import { ServiceException } from "../util/exceptions/ServiceException";
 import { IIdentfaibleOrderItem } from "../models/Iorder";
 import { ItemCategory } from "../models/Iitem";
 
+import { NotFoundException } from "../util/exceptions/http/NotFoundException";
+import { BadRequestException } from "../util/exceptions/http/BadRequestException";
+
 export class OrderManagement {
     //create
     public  async create(order:IIdentfaibleOrderItem):Promise<IIdentfaibleOrderItem>{
@@ -26,13 +29,16 @@ export class OrderManagement {
     public async get(id:string):Promise<IIdentfaibleOrderItem>{
         const catigories=Object.values(ItemCategory)
         for(const cat of catigories){
+            try{
             const repo=await RepositoryFactory.create(DBMode.SQLITE,cat);
             const order=await repo.get(id);
             if(order){
                 return order;
             }
+        }catch(err){
         }
-        throw new ServiceException("Order not found");
+        }
+        throw new NotFoundException("Order not found");
         
     }
     
@@ -56,17 +62,19 @@ export class OrderManagement {
                 return;
             }
         }
-        throw new ServiceException("Order not found");
+        throw new NotFoundException("Order not found");
     }
     //get all orders
     public async getAll():Promise<IIdentfaibleOrderItem[]>{
         const allOrders:IIdentfaibleOrderItem[]=[];
         const catigories=Object.values(ItemCategory)
+        console.log("Categories:", catigories);
         for(const cat of catigories){
             const repo=await RepositoryFactory.create(DBMode.SQLITE,cat);
             const orders=await repo.getALL();
             allOrders.push(...orders);
         }
+        console.log("All Orders:", allOrders);
         return allOrders;
     }
 
@@ -153,9 +161,14 @@ public async GenerateRevenueByCategory(): Promise<{
 
     
     private validateOrder(order:IIdentfaibleOrderItem):void{
-        if(!order.getItem() || order.getQuantity() <= 0 || order.getPrice() <= 0){
-            throw new ServiceException("Invalid order data");
+      if (!order.getItem() || order.getPrice() <= 0 || order.getQuantity() <= 0) {
+        const details = {
+            ItemNotDefined: !order.getItem(),
+            PriceNegative: order.getPrice() <= 0,
+            QuantityNegative: order.getQuantity() <= 0
         }
+        throw new BadRequestException("Invalid order: item, price, and quantity must be valid.", details);
+    }
     }
     private async getRepositoryByCategory(category:ItemCategory){
         return RepositoryFactory.create(DBMode.SQLITE,category);
