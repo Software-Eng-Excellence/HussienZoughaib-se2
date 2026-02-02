@@ -65,7 +65,7 @@ export class OrderManagement {
         throw new NotFoundException("Order not found");
     }
     //get all orders
-    public async getAll():Promise<IIdentfaibleOrderItem[]>{
+   /* public async getAll():Promise<IIdentfaibleOrderItem[]>{
         const allOrders:IIdentfaibleOrderItem[]=[];
         const catigories=Object.values(ItemCategory)
         console.log("Categories:", catigories);
@@ -76,84 +76,30 @@ export class OrderManagement {
         }
         console.log("All Orders:", allOrders);
         return allOrders;
+    }*/
+
+   
+public async getAll(): Promise<IIdentfaibleOrderItem[]> {
+  const allOrders: IIdentfaibleOrderItem[] = [];
+  const categories = Object.values(ItemCategory);
+  console.log("Categories:", categories);
+  
+  for (const cat of categories) {
+    // TEMPORARY FIX: Only process cake for now
+    if (cat !== ItemCategory.Cake) {
+      console.log(`Skipping ${cat} - repository not implemented yet`);
+      continue; // Skip other categories
     }
-
-    public async getTotalRevenue():Promise<number>{
-       const  orders=await this.getAll();
-       const revenue=orders.map(order=>order.getPrice()*order.getQuantity());
-       let  total=0;
-       for(const rev of revenue){
-        total+=rev;
-         }
-
-       return total;
-    }
-    public async getTotalOrders():Promise<number>{
-        const orders=await this.getAll();
-        return orders.length;
-    }
-public async groupOrdersByCategory(): Promise<{
-    totalOrders: number;
-    byCategory: Record<ItemCategory, number>;
-}> {
-    const byCategory: Record<ItemCategory, number> = {
-        [ItemCategory.Cake]: 0,
-        [ItemCategory.Book]: 0,
-        [ItemCategory.Toy]: 0,
-    };
-
-    let totalOrders = 0;
-
-    const categories = Object.values(ItemCategory);
-
-    for (const category of categories) {
-        const repo = await RepositoryFactory.create(DBMode.SQLITE, category);
-
-        // get total per category using the repo logic
-        const count = await repo.getALL();
-
-        byCategory[category] = count.length;
-        totalOrders += count.length;
-    }
-
-    return {
-        totalOrders,
-        byCategory
-    };
-}
-
-
-public async GenerateRevenueByCategory(): Promise<{
-    byCategory: Record<ItemCategory, number>;
-}> {
-    const byCategory: Record<ItemCategory, number> = {
-        [ItemCategory.Cake]: 0,
-        [ItemCategory.Book]: 0,
-        [ItemCategory.Toy]: 0,
-    };
-
-    const categories = Object.values(ItemCategory);
     
-    for (const category of categories) {
-        const repo = await RepositoryFactory.create(DBMode.SQLITE, category);
-        // Get orders for this specific category from the repository
-        const orders = await repo.getALL();
-        
-        // Calculate revenue for this specific category
-        let revenuePerCategory = 0;
-        for (const order of orders) {
-            revenuePerCategory += order.getPrice() * order.getQuantity();
-        }
-        
-        byCategory[category] = revenuePerCategory;
-    }
-
-    return {
-        byCategory
-    };
+    const repo = await RepositoryFactory.create(DBMode.SQLITE, cat);
+    const orders = await repo.getALL();
+    allOrders.push(...orders);
+  }
+  
+  console.log("All Orders:", allOrders);
+  return allOrders;
 }
-
-
+   
 
 
 
