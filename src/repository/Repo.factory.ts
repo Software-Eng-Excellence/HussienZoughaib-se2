@@ -20,7 +20,7 @@ export enum DBMode {
 
 export class RepositoryFactory {
 
-    public static async create(mode : DBMode, category: ItemCategory): Promise<IRepository<IIdentfaibleOrderItem>> {
+    public static async create(mode : DBMode, category?: ItemCategory): Promise<IRepository<IIdentfaibleOrderItem>> {
         switch (mode) {
             case DBMode.SQLITE: {
                 let repository: IRepository<IIdentfaibleOrderItem> & Intiazable;
