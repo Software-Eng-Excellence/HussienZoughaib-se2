@@ -7,8 +7,11 @@ import cors from "cors";
 import reqeustloegger from "./midlleware/requestLogger";
 import router from "./router/index";
 import { HttpException } from "./util/exceptions/http/HttpExceptions";
+import { authenticate } from "./midlleware/auth.middleware";
 
+import cookieParser from "cookie-parser";
 const app=express();
+
 //for security headers
 app.use(helmet());
 //use body parser
@@ -32,6 +35,7 @@ app.use(cors({
 /*runAnalyticsTest().catch(err => logger.error(err))*/
 //adding request handler mdidleware
 app.use(reqeustloegger);
+app.use(cookieParser());
 app.listen(config.port,config.host,()=>{
     logger.info(`Server is running at http://${config.host}:${config.port}`);
 });

@@ -1,0 +1,12 @@
+generate the following req:
+_USER MODEl containing following properties:name ,email,password
+_User builder
+_SQL user mapper thatv maps the user obbject to sql and vise versa
+_JsonMapoer that maps json req to suer obbject
+_Repo layer for user that implents iREPO INTERFACE and connects with sql
+_Service layer for user to do the crud oppertaion
+_Controller that contrel thar uses the repo
+_Router for diff routes
+
+*Put each file for the corresponding folder i.e model in the model folder etc..
+*Use the same pattern as the order did i will give u all files and the api documecntation for the user
