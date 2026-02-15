@@ -4,6 +4,7 @@ import { createUserRepo, Userrepo } from "../repository/sqlite/User.repo";
 import { BadRequestException } from "../util/exceptions/http/BadRequestException";
 import { NotFoundException } from "../util/exceptions/http/NotFoundException";
 import { ServiceException } from "../util/exceptions/ServiceException";
+import { IdentifiableUser, User } from "models/User.model";
 
 
 export class UserManagement {
@@ -55,7 +56,7 @@ export class UserManagement {
     }
 
     // Get user by email
-    public async validate(email: string,password: string): Promise<id> {
+    public async validate(email: string,password: string): Promise<IIdentifiableUser> {
         try {
             const user = await(await this.getRepo()).getUserByEmail(email);
             if(!user){
@@ -64,7 +65,7 @@ export class UserManagement {
             if(password !== user.getPassword()){
                 throw new BadRequestException("Invalid password");
             }
-            return user.getId();
+            return user;
         } catch (error) {
             throw new ServiceException("Failed to validate user", error as Error);
         }

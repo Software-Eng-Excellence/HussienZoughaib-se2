@@ -1,28 +1,29 @@
 import jwt from 'jsonwebtoken';
 import  config  from '../config';
-import { TokenPayload } from '../config/tokenPayload';
+import { TokenPayload, UserPayload } from '../config/tokenPayload';
 import { AuthenticationException, ExpiredTokenException, InvalidTokenException } from '../util/exceptions/http/AuthenticationException';
 import { Response } from 'express';
 import logger from '../util/logger';
 import ms from 'ms';
 import { ServiceException } from '../util/exceptions/ServiceException';
+import { User } from 'models/User.model';
 export class AuthenticationService {
     constructor(
         private seceret=config.auth.jwtSecret,
         private expiration=config.auth.expiration,
         private refreshExpiration=config.auth.refreshExpiration
     ){}
-     generateToken(userId:string):string{
-        return jwt.sign({userId},this.seceret,{expiresIn:this.expiration});
+     generateToken(payload:UserPayload):string{
+        return jwt.sign(payload,this.seceret,{expiresIn:this.expiration});
     }
-    generateRefreshToken(userId:string):string{
-        return jwt.sign({userId},this.seceret,{expiresIn:this.refreshExpiration});
+    generateRefreshToken(payload:UserPayload):string{
+        return jwt.sign(payload,this.seceret,{expiresIn:this.refreshExpiration});
     }
     
 
-     verifyToken(token:string):TokenPayload{
+     verifyToken(token:string):UserPayload{
         try {
-            return jwt.verify(token,this.seceret) as TokenPayload;
+            return jwt.verify(token,this.seceret) as UserPayload;
         } catch (error) {
             logger.error("Token verification failed", { error });
             if (error instanceof jwt.TokenExpiredError) {
@@ -40,7 +41,7 @@ refreshToken(refreshToken:string){
  if(!payload){
     throw new InvalidTokenException();
 }
- const newToken=this.generateToken(payload.userId);
+ const newToken=this.generateToken(payload);
     return newToken;
 }
 
@@ -67,9 +68,9 @@ clearTokens(res:Response){
     res.clearCookie('refreshToken');
 
 }
-persisAuthentication(res:Response,userId:string){
-     const token=  this.generateToken(userId);
-        const refreshToken=this.generateRefreshToken(userId);
+persisAuthentication(res:Response,payload:UserPayload){
+     const token=  this.generateToken(payload);
+        const refreshToken=this.generateRefreshToken(payload);
        
          this.setTokenInCookie(res,token);
            this.setRefreshTokenInCookie(res,refreshToken);

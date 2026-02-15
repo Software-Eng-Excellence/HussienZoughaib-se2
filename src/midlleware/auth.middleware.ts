@@ -24,7 +24,7 @@ export function authenticate(req: Request, res: Response, next: NextFunction) {
 
         }
                 const payload = authService.verifyToken(authToken);
-                (req as AuthRequest).userId = payload.userId; // Attach userId to request
+                (req as AuthRequest).user = payload; // Attach userId to request
                 next(); // Proceed to the next middleware or route handler
         
 }

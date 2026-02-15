@@ -1,14 +1,15 @@
 import { id } from "repository/IRepository";
 import { IIdentifiableUser, IUser } from "./Iuser";
+import { ROLE } from "../config/roles";
 
 export class User implements IUser {
     private id: string;
     private name: string;
     private email: string;
     private password: string;
-    private role: string;
+    private role: ROLE;
 
-    constructor(id: string, name: string, email: string, password: string, role: string = 'user') {
+    constructor(id: string, name: string, email: string, password: string, role: ROLE = ROLE.user) {
         this.id = id;
         this.name = name;
         this.email = email;
@@ -32,7 +33,7 @@ export class User implements IUser {
         return this.id;
     }
 
-    getRole(): string {
+    getRole(): ROLE {
         return this.role;
     }
 }
@@ -43,7 +44,7 @@ export class IdentifiableUser implements IIdentifiableUser {
         private name: string,
         private email: string,
         private password: string,
-        private role: string = 'user'
+        private role: ROLE = ROLE.user
     ) {
 
     }
@@ -63,7 +64,7 @@ export class IdentifiableUser implements IIdentifiableUser {
     getId(): id {
         return this.id;
     }
-    getRole():string{
+    getRole():ROLE{
         return this.role;
     }
 }

@@ -24,7 +24,7 @@ export const ROLE_PERMISSIONS: RolePermissions ={
         ...Object.values(Permission)
     ],
     [ROLE.user]: [
-      
+        Permission.READ_ORDER,
         Permission.WRITE_ORDER,
         Permission.READ_USER,
         Permission.UPDATE_USER,
@@ -46,4 +46,18 @@ export const ROLE_PERMISSIONS: RolePermissions ={
 
     ]
 
+}
+export const toRole = (role: string): ROLE => {
+    switch(role){
+        case ROLE.admin:
+            return ROLE.admin;
+        case ROLE.user:
+            return ROLE.user;
+        case ROLE.guest:
+            return ROLE.guest;
+        case ROLE.manager:
+            return ROLE.manager;
+        default:
+            throw new Error(`Invalid role: ${role}`);
+    }
 }

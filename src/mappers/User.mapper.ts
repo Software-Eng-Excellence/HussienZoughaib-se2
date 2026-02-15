@@ -3,13 +3,14 @@ import { IdentifiableUserBuilder, UserBuilder } from "../models/builder/User.bui
 import { IIdentifiableUser, IUser } from "models/Iuser";
 import { IdentifiableUser } from "models/User.model";
 import { idGenerater } from "../util/idGenerater";
+import { ROLE, toRole } from "../config/roles";
 
 export interface SQLUser {
     id: string;
     name: string;
     email: string;
     password: string;
-    role:string;
+    role: string;
 }
 
 export class SQLUserMapper implements IMapper<SQLUser, IdentifiableUser> {
@@ -20,7 +21,7 @@ export class SQLUserMapper implements IMapper<SQLUser, IdentifiableUser> {
             .setName(input.name)
             .setEmail(input.email)
             .setPassword(input.password)
-            .setRole(input.role)
+            .setRole(toRole(input.role))
             .build();
     }
 
@@ -39,7 +40,7 @@ export interface JsonUser {
     name: string;
     email: string;
     password: string;
-    role?: string;
+    role?: ROLE;
 }
 
 export class JsonUserMapper implements IMapper<any, IdentifiableUser> {
@@ -50,7 +51,7 @@ export class JsonUserMapper implements IMapper<any, IdentifiableUser> {
             .setName(input.name)
             .setEmail(input.email)
             .setPassword(input.password)
-            .setRole(input.role || 'user')
+            .setRole(input.role ? toRole(input.role) : ROLE.user)
             .build();
     }
 

@@ -7,7 +7,8 @@ import logger from "../../util/logger";
 import { ConnectionManager } from "./ConnectionManger";
 import { SQLUserMapper, SQLUser } from "../../mappers/User.mapper";
 import { IdentifiableUser } from "../../models/User.model";
-import { idGenerater } from "../../util/idGenerater"
+import { idGenerater } from "../../util/idGenerater";
+import { ROLE } from "../../config/roles"
 
 const CREATE_TABLE_QUERY = `
 CREATE TABLE IF NOT EXISTS users (
@@ -19,7 +20,7 @@ CREATE TABLE IF NOT EXISTS users (
 `;
 
 const ALTER_TABLE_QUERY = `
-ALTER TABLE users ADD COLUMN role TEXT DEFAULT 'user';
+ALTER TABLE users ADD COLUMN role TEXT DEFAULT '${ROLE.user}';
 
 `;
 
@@ -59,7 +60,12 @@ export class Userrepo implements IRepository<IIdentifiableUser>, Intiazable {
         try {
             const connection = await ConnectionManager.getConnection();
             await connection.exec(CREATE_TABLE_QUERY);
-            await connection.exec(ALTER_TABLE_QUERY);
+            // Check if role column exists before adding it
+            const columnExists = await connection.get(`PRAGMA table_info(users)`) as any;
+            const hasRoleColumn = columnExists && (await connection.all(`PRAGMA table_info(users)`) as any[]).some((col: any) => col.name === 'role');
+            if (!hasRoleColumn) {
+                await connection.exec(ALTER_TABLE_QUERY);
+            }
             logger.info("Users table ensured in the database");
         } catch (error: unknown) {
             logger.error("Failed to initialize the repository", error as Error);

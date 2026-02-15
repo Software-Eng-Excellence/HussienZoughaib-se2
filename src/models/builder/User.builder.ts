@@ -1,12 +1,13 @@
 import { IIdentifiableUser } from "models/Iuser";
 import { IdentifiableUser, User } from "../User.model";
+import { ROLE } from "../../config/roles";
 
 export class UserBuilder {
     private id!: string;
     private name!: string;
     private email!: string;
     private password!: string;
-    private role!:string
+    private role!: ROLE
 
     public static createBuilder(): UserBuilder {
         return new UserBuilder();
@@ -31,8 +32,8 @@ export class UserBuilder {
         this.password = password;
         return this;
     }
-    setRole(role:string):this{
-        this.role=role;
+    setRole(role: ROLE): this {
+        this.role = role;
         return this;
     }
 
@@ -52,7 +53,7 @@ export class IdentifiableUserBuilder {
     private name!: string;
     private email!: string;
     private password!: string;
-    private role!:string
+    private role!: ROLE
 
     static createBuilder(): IdentifiableUserBuilder {
         return new IdentifiableUserBuilder();
@@ -77,8 +78,8 @@ export class IdentifiableUserBuilder {
         this.password = password;
         return this;
     }
-    setRole(role:string):IdentifiableUserBuilder{
-        this.role=role;
+    setRole(role: ROLE): IdentifiableUserBuilder {
+        this.role = role;
         return this;
     }
 
