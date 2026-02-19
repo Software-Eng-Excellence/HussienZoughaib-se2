@@ -1,4 +1,4 @@
-import { NextFunction, Request, Response } from "express";
+import {  Request, Response } from "express";
 import { UserManagement } from "../service/UserManagement";
 import { IIdentifiableUser } from "../models/Iuser";
 import { JsonUserMapper } from "../mappers/User.mapper";

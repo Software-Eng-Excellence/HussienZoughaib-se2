@@ -1,5 +1,5 @@
 import { AnaltycService } from "service/AnaltycService";
-import { NextFunction ,Request,Response} from "express";
+import { Request,Response} from "express";
 export class AnaltycController{
     constructor(private readonly analtycService:AnaltycService){
 

@@ -1,8 +1,6 @@
 import { IintCake } from "models/Cake.model";
 import { id, Intiazable, IRepository } from "repository/IRepository";
-import config from "config";
-import { open } from "sqlite";
-import { Database } from "sqlite3";
+;
 import logger from "../../util/logger";
 
 

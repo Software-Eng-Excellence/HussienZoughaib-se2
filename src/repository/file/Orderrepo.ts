@@ -1,6 +1,6 @@
 import logger from "../../util/logger";
 
-import { id, ID, IRepository } from "../IRepository";
+import { id, IRepository } from "../IRepository";
 import { InvalidItemException, ItemNotFoundException } from "../../util/exceptions/RepoException";
 import { IOrder } from "../../models/Iorder";
 

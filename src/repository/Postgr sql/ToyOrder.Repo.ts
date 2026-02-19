@@ -6,7 +6,7 @@ import logger from "../../util/logger";
 import { DBException, ItemNotFoundException, RepositoryInitializationException } from "../../util/exceptions/RepoException";
 import { SqlToy, SQLTOYMAPPER } from "../../mappers/Toy.mapper";
 
-const table_name=ItemCategory.Toy;
+
 const CREATE_TABLE_QUERY = `
 CREATE TABLE IF NOT EXISTS toy (
     id TEXT PRIMARY KEY,

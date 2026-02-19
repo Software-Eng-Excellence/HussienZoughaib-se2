@@ -1,6 +1,6 @@
 import { IMapper } from "./IMapper";
-import { IdentifiableUserBuilder, UserBuilder } from "../models/builder/User.builder";
-import { IIdentifiableUser, IUser } from "models/Iuser";
+import { IdentifiableUserBuilder } from "../models/builder/User.builder";
+
 import { IdentifiableUser } from "models/User.model";
 import { idGenerater } from "../util/idGenerater";
 import { ROLE, toRole } from "../config/roles";
@@ -43,8 +43,8 @@ export interface JsonUser {
     role?: ROLE;
 }
 
-export class JsonUserMapper implements IMapper<any, IdentifiableUser> {
-    map(input: any): IdentifiableUser {
+export class JsonUserMapper implements IMapper<JsonUser, IdentifiableUser> {
+    map(input: JsonUser): IdentifiableUser {
         return IdentifiableUserBuilder
             .createBuilder()
             .setId(idGenerater('user'))

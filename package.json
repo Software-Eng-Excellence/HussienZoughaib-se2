@@ -41,6 +41,9 @@
     "typescript-eslint": "^8.41.0"
   },
   "dependencies": {
+    "@eslint/config-array": "^0.23.1",
+    "balanced-match": "^1.0.2",
+    "brace-expansion": "^2.0.1",
     "cookie-parser": "^1.4.7",
     "cors": "^2.8.5",
     "csv-stringify": "^6.6.0",

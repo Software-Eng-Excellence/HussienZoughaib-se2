@@ -1,6 +1,6 @@
 import { DBMode, RepositoryFactory } from "../repository/Repo.factory";
 
-import { ServiceException } from "../util/exceptions/ServiceException";
+
 
 
 

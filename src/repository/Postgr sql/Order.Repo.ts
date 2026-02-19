@@ -1,5 +1,5 @@
-import { IIdentfaibleItem, ItemCategory } from "models/Iitem";
-import { IIdentfaibleOrderItem, IOrder } from "models/Iorder";
+import { IIdentfaibleItem} from "models/Iitem";
+import { IIdentfaibleOrderItem} from "models/Iorder";
 
 import { id, Intiazable, IRepository } from "repository/IRepository";
 
@@ -7,7 +7,7 @@ import { DBException, ItemNotFoundException, RepositoryInitializationException }
 import logger from "../../util/logger";
 import { ConnectionManager } from "./ConnectionManager";
 import { SQLOrder, SQLORDERMAPPER } from "../../mappers/Order.mapper";
-import { error, ExceptionHandler } from "winston";
+import { error} from "winston";
 
 //1step one create the table if not exists
 

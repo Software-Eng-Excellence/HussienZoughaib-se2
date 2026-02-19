@@ -2,9 +2,8 @@ import { IIdentfaibleItem, ItemCategory } from "models/Iitem";
 import { IIdentfaibleOrderItem, IOrder } from "models/Iorder";
 
 import { id, Intiazable, IRepository } from "repository/IRepository";
-import { open } from "sqlite";
-import { Database } from "sqlite3";
-import { DBException, ItemNotFoundException, RepositoryInitializationException } from "../../util/exceptions/RepoException";
+
+import { DBException, RepositoryInitializationException } from "../../util/exceptions/RepoException";
 import logger from "../../util/logger";
 import { ConnectionManager } from "./ConnectionManger";
 import { SQLOrder, SQLORDERMAPPER } from "../../mappers/Order.mapper";

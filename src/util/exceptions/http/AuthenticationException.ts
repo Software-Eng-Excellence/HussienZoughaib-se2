@@ -1,4 +1,4 @@
-import { http } from "winston";
+
 import { HttpException } from "./HttpExceptions";
 
 export class AuthenticationException extends HttpException {

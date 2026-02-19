@@ -7,7 +7,7 @@ import cors from "cors";
 import reqeustloegger from "./midlleware/requestLogger";
 import router from "./router/index";
 import { HttpException } from "./util/exceptions/http/HttpExceptions";
-import { authenticate } from "./midlleware/auth.middleware";
+
 
 import cookieParser from "cookie-parser";
 const app=express();
@@ -46,7 +46,7 @@ app.use((req,res)=>{
 })
 //make and error hadnler
 // After: Enhanced Global Error Handler
-app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
+app.use((err: Error, req: Request, res: Response) => {
     if ( err instanceof HttpException) {
         const httpException = err as HttpException;
         // Log includes name, status, message, and details

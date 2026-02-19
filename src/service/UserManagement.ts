@@ -1,10 +1,10 @@
-import { id, ID } from "repository/IRepository";
+import { id} from "repository/IRepository";
 import { IIdentifiableUser } from "../models/Iuser";
 import { createUserRepo, Userrepo } from "../repository/sqlite/User.repo";
 import { BadRequestException } from "../util/exceptions/http/BadRequestException";
 import { NotFoundException } from "../util/exceptions/http/NotFoundException";
 import { ServiceException } from "../util/exceptions/ServiceException";
-import { IdentifiableUser, User } from "models/User.model";
+
 
 
 export class UserManagement {

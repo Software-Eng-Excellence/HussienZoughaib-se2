@@ -1,4 +1,4 @@
-import { AuthenticationFailedException, ExpiredTokenException } from "../util/exceptions/http/AuthenticationException";
+import { AuthenticationFailedException} from "../util/exceptions/http/AuthenticationException";
 import { AuthenticationService } from "../service/Authentication.Service";
 import { NextFunction, Request, Response } from "express";
 import { AuthRequest } from "../config/authRequest";

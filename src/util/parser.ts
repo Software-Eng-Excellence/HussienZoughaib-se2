@@ -10,7 +10,7 @@ import { stringify as cvStringify } from 'csv-stringify'; // Import the CSV stri
  * @param include_header - Whether to include the header row in the output (default: false)
  */
 export async function parseCSV(filePath: string,include_header:boolean=false): Promise<string[][]> {
-  try {
+
     // Read the file content asynchronously as UTF-8 text
     const fileContent = await fs.readFile(filePath, 'utf-8');
 
@@ -35,11 +35,8 @@ export async function parseCSV(filePath: string,include_header:boolean=false): P
         }
       );
     });
-  } catch (error) {
-    // If reading the file fails, throw the error to reject the promise
-    throw error;
-  }
-}
+  } 
+
 /**
  * Writes a 2D string array to a CSV file.
  * @param filePath - Path to the CSV file
@@ -47,7 +44,7 @@ export async function parseCSV(filePath: string,include_header:boolean=false): P
  * @returns Promise<void> - Resolves when writing is complete
  */
 export async function writeCSV(filePath: string, data: string[][]): Promise<void> {
-  try {
+ 
     const output = await new Promise<string>((resolve, reject) => {
       try {
         cvStringify(
@@ -66,9 +63,7 @@ export async function writeCSV(filePath: string, data: string[][]): Promise<void
       }
     });
     await fs.writeFile(filePath, output, 'utf-8');
-  } catch (error) {
-    throw error;
-  }
+  
 }
 
 

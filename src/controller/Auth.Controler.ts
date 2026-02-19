@@ -2,8 +2,8 @@ import { UserManagement } from "../service/UserManagement";
 import { AuthenticationService } from "../service/Authentication.Service";
 import {  Request, Response } from "express";
 import { BadRequestException } from "../util/exceptions/http/BadRequestException";
-import { log } from "console";
-import { AuthRequest } from "config/authRequest";
+
+
 import logger from "../util/logger";
 import { toRole } from "../config/roles";
 export class AuthController{

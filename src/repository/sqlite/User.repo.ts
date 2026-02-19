@@ -1,7 +1,6 @@
 import { IIdentifiableUser } from "models/Iuser";
 import { id, Intiazable, IRepository } from "repository/IRepository";
-import { open } from "sqlite";
-import { Database } from "sqlite3";
+
 import { DBException, RepositoryInitializationException } from "../../util/exceptions/RepoException";
 import logger from "../../util/logger";
 import { ConnectionManager } from "./ConnectionManger";

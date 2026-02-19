@@ -55,7 +55,17 @@ export class SQLBOOKMAPPER implements IMapper<SQLBOOK,INITBook>{
      ).setId(input.id).build();
     }
     reversemap(input: INITBook): SQLBOOK {
-        throw new Error("Method not implemented.");
+        return {
+            id: input.getId(),
+            title: input.getTitle(),
+            author: input.getAuthor(),
+            genre: input.getGenre(),
+            format: input.getFormat(),
+            language: input.getLanguage(),
+            publisher: input.getPublisher(),
+            edition: input.getEdition(),
+            packaging: input.getPackaging()
+        };
     }
 
 }
