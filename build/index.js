@@ -11,7 +11,8 @@ const body_parser_1 = __importDefault(require("body-parser"));
 const cors_1 = __importDefault(require("cors"));
 const requestLogger_1 = __importDefault(require("./midlleware/requestLogger"));
 const index_1 = __importDefault(require("./router/index"));
-const ApiException_1 = require("./util/exceptions/ApiException");
+const HttpExceptions_1 = require("./util/exceptions/http/HttpExceptions");
+const cookie_parser_1 = __importDefault(require("cookie-parser"));
 const app = (0, express_1.default)();
 //for security headers
 app.use((0, helmet_1.default)());
@@ -34,6 +35,7 @@ app.use((0, cors_1.default)({
 /*runAnalyticsTest().catch(err => logger.error(err))*/
 //adding request handler mdidleware
 app.use(requestLogger_1.default);
+app.use((0, cookie_parser_1.default)());
 app.listen(config_1.default.port, config_1.default.host, () => {
     logger_1.default.info(`Server is running at http://${config_1.default.host}:${config_1.default.port}`);
 });
@@ -43,15 +45,23 @@ app.use((req, res) => {
     res.status(404).json({ error: 'Not Found' });
 });
 //make and error hadnler
-app.use((err, req, res, next) => {
-    if (err instanceof ApiException_1.ApiException) {
-        const apiError = err;
-        logger_1.default.error(`API Error of status %d: %s`, apiError.status, err.message);
-        res.status(apiError.status).json({ error: apiError.message });
+// After: Enhanced Global Error Handler
+app.use((err, req, res) => {
+    if (err instanceof HttpExceptions_1.HttpException) {
+        const httpException = err;
+        // Log includes name, status, message, and details
+        logger_1.default.error(" %s [%d] \"%s\" %o", httpException.name, httpException.status, httpException.message, httpException.details || {});
+        // Response includes message and details
+        res.status(httpException.status).json({
+            message: httpException.message,
+            details: httpException.details || undefined
+        });
     }
     else {
-        logger_1.default.error(`Error occurred: ${err.message}`);
-        res.status(500).json({ error: 'Internal Server Error' });
+        logger_1.default.error("Unhandled Error: %s", err.message);
+        res.status(500).json({
+            message: "Internal Server Error"
+        });
     }
 });
 //# sourceMappingURL=index.js.map
