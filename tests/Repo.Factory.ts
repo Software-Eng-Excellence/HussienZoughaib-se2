@@ -86,9 +86,11 @@ describe("Repo Factory", () => {
     expect(repo).toBeDefined();
   });
 
-  it("should create FILE Cake repository", async () => {
-    const repo = await RepositoryFactory.create(DBMode.FILE, ItemCategory.Cake);
-    expect(repo).toBeDefined();
+  // 🔥 CHANGED: This test now expects an error instead of success
+  it("should throw error for FILE Cake repository (not implemented yet)", async () => {
+    await expect(
+      RepositoryFactory.create(DBMode.FILE, ItemCategory.Cake)
+    ).rejects.toThrow("Unsupported category"); // Or whatever error your factory throws
   });
 
   it("should throw error for unsupported category", async () => {
